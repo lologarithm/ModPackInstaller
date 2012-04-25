@@ -63,7 +63,7 @@ namespace IndustrialInstaller.Properties {
         /// <summary>
         ///   Looks up a localized string similar to &lt;Profile
         ///  &lt;Name=&quot;Default&quot;&gt;
-        ///  &lt;MinecraftJar=&quot;%mc_jar%&quot;&gt;
+        ///  &lt;MinecraftJar=&quot;%mc_jar%\\bin\\minecraft.jar&quot;&gt;
         ///  &lt;MaxMemory=&quot;1024&quot;&gt;
         ///  &lt;InactiveExternalMods
         ///    &quot;buildcraft-client-A-core-2.2.14.zip&quot;
@@ -75,11 +75,7 @@ namespace IndustrialInstaller.Properties {
         ///    &quot;NEI_RedPowerPlugin 1.2.2.zip&quot;
         ///    &quot;RedPowerCore-2.0pr5.zip&quot;
         ///    &quot;RedPowerLogic-2.0pr5.zip&quot;
-        ///    &quot;RedPowerWiring-2.0pr5.zip&quot;
-        ///  &gt;
-        ///&gt;
-        ///&lt;Profile
-        ///  &lt;N [rest of string was truncated]&quot;;.
+        ///    &quot;RedPowerWiring-2.0pr5.zip&quot; [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string config_string {
             get {
@@ -94,18 +90,12 @@ namespace IndustrialInstaller.Properties {
             }
         }
         
-        internal static byte[] NEI {
-            get {
-                object obj = ResourceManager.GetObject("NEI", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
         /// <summary>
         ///   Looks up a localized string similar to &lt;Profile
         ///  &lt;Name=&quot;IndustrialMinecraft&quot;&gt;
-        ///  &lt;MinecraftJar=&quot;%mc_indust_jar%&quot;&gt;
+        ///  &lt;MinecraftJar=&quot;%indust_mc%\\bin\\industrial_minecraft.jar&quot;&gt;
         ///  &lt;MaxMemory=&quot;1024&quot;&gt;
+        ///  &lt;BaseDir=&quot;%indust_mc%&quot;&gt;
         ///  &lt;Mod
         ///    &lt;File=&quot;%i_mod%\\OptiFine_1.2.5_HD_A5.zip&quot;&gt;
         ///    &lt;Active=&quot;true&quot;&gt;
