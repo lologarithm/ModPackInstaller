@@ -22,6 +22,10 @@ namespace IndustrialInstaller
             this.TemporaryZipDownload = temp_zip_file;
         }
 
+        /// <summary>
+        /// Does the installation steps for all the mods and configs.
+        /// Calls back using the Dispatcher because it is assumed this will be on a separate thread.
+        /// </summary>
         public void DoInstallation()
         {
             // Disable Install Button so they dont click twice.
@@ -57,7 +61,7 @@ namespace IndustrialInstaller
             Utilities.MoveFiles(temp_unpacked_dir + @"\bin\", mc_appdata_dir + @"\bin\");
 
             Window.Dispatcher.Invoke(DispatcherPriority.Normal, new Action<double, string>(Window.UpdateProgressAndText), 45, "Moving mod files.");
-            // Now move all mods files to the MC mods directory (and create mods if it doesn't exist).
+            // Now move all mods files to the MC mods directory (and create mods dir if it doesn't exist).
             Utilities.MoveFiles(temp_unpacked_dir + @"\mods\", mc_appdata_dir + @"\mods\");
 
             Window.Dispatcher.Invoke(DispatcherPriority.Normal, new Action<double, string>(Window.UpdateProgressAndText), 60, "Moving internal mod files.");
@@ -76,6 +80,7 @@ namespace IndustrialInstaller
             // Finally, delete all temp files
             Directory.Delete(temp_unpacked_dir, true);
 
+            // If user already has MagicLauncher we let them know the name of the new profile to use.
             string new_text = "Installation Complete: ";
             if (status == Utilities.ConfigStatus.CreatedNew)
                 new_text += "Go to your install directory and run the exe!";

@@ -27,41 +27,50 @@ namespace IndustrialInstaller
         private string temp_zip_file = "";
         private string install_dir = "";
 
+        // 1. Prompt user to select installation location.
+        // 2. Download .zip
+        // 3. unzip
+        // 4. Move bin/mod directory to .minecraft folder
+        // 5. Check to see if magiclaucher .cfg exists.
+        // 6. If exists, add new profile, if not, create new cfg
+        // 7. Place MagicLauncher with external mods in the installation location.
+
         public MainWindow()
         {
             InitializeComponent();
 
+
+            // Default install will be in mydocuments
             installLocation.Text = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\IndustrialLauncher";
             install_dir = installLocation.Text;
-            // 1. Prompt user to select installation location.
-            // 2. Download .zip
-            // 3. unzip
-            // 4. Move bin/mod directory to .minecraft folder
-            // 5. Check to see if magiclaucher .cfg exists.
-            // 6. If exists, add new profile, if not, create new cfg
-            // 7. Place MagicLauncher with external mods in the installation location.
         }
 
         private void btnDownload_Click(object sender, RoutedEventArgs e)
         {
             if (dl_button.IsEnabled)
             {
+                // Prevent user from hittin button again.
                 dl_button.IsEnabled = false;
-
-                temp_zip_file = System.IO.Path.GetTempFileName();
-
+                //
                 progressBar.Visibility = System.Windows.Visibility.Visible;
 
+                // DL zip into temp file.
+                temp_zip_file = System.IO.Path.GetTempFileName();
+
+                // Async DL class that will update the progress bar as it downloads.
                 WebClient webClient = new WebClient();
                 webClient.DownloadFileCompleted += new AsyncCompletedEventHandler(Completed);
                 webClient.DownloadProgressChanged += new DownloadProgressChangedEventHandler(ProgressChanged);
+                
+                // TODO: make this configurable so we don't recompile everytime we change the location. This could also let other people use this.
                 webClient.DownloadFileAsync(new Uri("http://lologarithm.dyndns.org/minecraft/industrial_client.zip"), temp_zip_file);
             }
         }
 
         private void ProgressChanged(object sender, DownloadProgressChangedEventArgs e)
         {
-            UpdateProgressAndText(e.ProgressPercentage, "Downloading: " + e.ProgressPercentage + "%");
+            // Update text with total bytes and % download
+            UpdateProgressAndText(e.ProgressPercentage, "Downloading: " + e.BytesReceived + " / " + e.TotalBytesToReceive + "(" + e.ProgressPercentage + "%)");
         }
 
         private void Completed(object sender, AsyncCompletedEventArgs e)
@@ -86,6 +95,7 @@ namespace IndustrialInstaller
 
         private void btn_Install_clicked(object sender, RoutedEventArgs e)
         {
+            // When install button is clicked we kick off new thread so that UI thread doesn't freeze.
             Installer i = new Installer(this, temp_zip_file, install_dir);
 
             Thread install_thread = new Thread(i.DoInstallation);

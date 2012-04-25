@@ -9,8 +9,8 @@
         <Button Content="Download" Height="25" HorizontalAlignment="Left" Margin="25,90,0,0" Name="dl_button" VerticalAlignment="Top" Width="65" Click="btnDownload_Click" />
 
         <TextBlock Height="25" Text="Step 2. Select installation directory" Margin="12,130,12,0" Name="dirText" VerticalAlignment="Top" />
-        <TextBox Height="25" Width="250" Text="" Margin="25,165,0,0" Name="installLocation" VerticalAlignment="Top" HorizontalAlignment="Left" />
-        <Button Content="Select directory" Height="25" Width="100" Margin="285,165,0,0" Name="selectInstallButton" VerticalAlignment="Top" HorizontalAlignment="Left" Click="btn_SelectDirectory_clicked" />
+        <TextBox Height="25" Width="300" Text="" Margin="25,165,0,0" Name="installLocation" VerticalAlignment="Top" HorizontalAlignment="Left" />
+        <Button Content="Select directory" Height="25" Width="100" Margin="335,165,0,0" Name="selectInstallButton" VerticalAlignment="Top" HorizontalAlignment="Left" Click="btn_SelectDirectory_clicked" />
 
         <TextBlock Height="25" Width="Auto" Text="Step 3. Install when download is complete." Margin="12,200,0,0" Name="installText" VerticalAlignment="Top" />
         <Button IsEnabled="False" Content="Install" Height="25" Width="100" Margin="25,235,0,0" Name="startInstallButton" VerticalAlignment="Top" HorizontalAlignment="Left" Click="btn_Install_clicked" />

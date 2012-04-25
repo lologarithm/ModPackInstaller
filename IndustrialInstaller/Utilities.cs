@@ -8,6 +8,11 @@ namespace IndustrialInstaller
 {
     class Utilities
     {
+        /// <summary>
+        /// Given a directory from and to this method will copy all files overwritting existing files.
+        /// </summary>
+        /// <param name="from">Directory to copy from</param>
+        /// <param name="to">Directory to copy to</param>
         public static void MoveFiles(string from, string to)
         {
             if (Directory.Exists(from))
@@ -40,6 +45,12 @@ namespace IndustrialInstaller
             }
         }
 
+        /// <summary>
+        /// Given a Minecraft directory and install directory this method will copy all modloader mods, internal mods, MagicLauncher profile, and NEI profile to the correct locations.
+        /// </summary>
+        /// <param name="mc_dir">Directory that MC is installed at (usually %appdata%/.minecraft)</param>
+        /// <param name="install_dir">Directory that the Launcher and internal mods will be installed at.</param>
+        /// <returns></returns>
         public static ConfigStatus CreateOrUpdateConfig(string mc_dir, string install_dir)
         {
             ConfigStatus return_value = ConfigStatus.CreatedNew;
@@ -51,6 +62,8 @@ namespace IndustrialInstaller
 
             string config_string = "";
 
+            // TODO: Possibly add the resources for MagicLauncher profile and NEI profile to be part of zip instead of compiled.
+            // This will allow for more flexibilty in the package without having to recompile code.
             if (!File.Exists(mc_dir + @"\magic\" + "MagicLauncher.cfg"))
             {
                 config_string = IndustrialInstaller.Properties.Resources.config_string;
@@ -60,7 +73,6 @@ namespace IndustrialInstaller
                 // TODO: If player already has a profile called "IndustrialMinecraft" remove it so that a new one can be created.
 
                 config_string = IndustrialInstaller.Properties.Resources.profile_string;
-                
                 return_value = ConfigStatus.UpdatedExisting;
             }
 
@@ -75,6 +87,7 @@ namespace IndustrialInstaller
 
 
             // Setup NEI options if they dont exist.
+            // We dont want to overwrite settings if people like them how they are.
             if (!Directory.Exists(mc_dir + @"\config"))
             {
                 Directory.CreateDirectory(mc_dir + @"\config");
@@ -89,7 +102,10 @@ namespace IndustrialInstaller
             return return_value;
         }
 
-
+        /// <summary>
+        /// States after running installation of MagicLauncher configs
+        /// This lets you tailor message to end user.
+        /// </summary>
         public enum ConfigStatus
         {
             CreatedNew,
