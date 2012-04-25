@@ -54,7 +54,6 @@ namespace IndustrialInstaller
             File.Delete(TemporaryZipDownload);
 
             // TODO: Decide how we want to cleanup old version of data laying around like the internal_mods directory.
-            // TODO: Load each of these as a separate thread, this will lock up the UI less and let the progress bar update properly.
 
             Window.Dispatcher.Invoke(DispatcherPriority.Normal, new Action<double, string>(Window.UpdateProgressAndText), 30, "Moving modded bin files.");
             // First move all bin files to the MC appdata directory.
