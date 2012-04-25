@@ -5,6 +5,7 @@ using System.Text;
 using System.IO;
 using Ionic.Zip;
 using System.Windows.Threading;
+using System.Threading;
 
 namespace IndustrialInstaller
 {
@@ -32,14 +33,34 @@ namespace IndustrialInstaller
             Window.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(Window.DisableInstallButton));
 
             string temp_unpacked_dir = System.IO.Path.GetTempPath() + System.IO.Path.GetRandomFileName();
+
             string mc_appdata_dir = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\.minecraft";
+            string new_mc_appdata_dir = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\.industrial_minecraft\.minecraft";
+
+            Window.Dispatcher.Invoke(DispatcherPriority.Normal, new Action<double, string>(Window.UpdateProgressAndText), 5, "Setting up minecraft directory");
+
+            if (!Directory.Exists(mc_appdata_dir))
+            {
+                Window.Dispatcher.Invoke(DispatcherPriority.Normal, new Action<double, string>(Window.UpdateProgressAndText), 1, "Warning! No minecraft folder at:" + mc_appdata_dir );
+                return;
+            }
 
             if (!Directory.Exists(InstallDirectory))
             {
                 Directory.CreateDirectory(InstallDirectory);
             }
 
-            Window.Dispatcher.Invoke(DispatcherPriority.Normal, new Action<double, string>(Window.UpdateProgressAndText), 15, "Unpacking download");
+            if (!Directory.Exists(new_mc_appdata_dir))
+            {
+                Directory.CreateDirectory(new_mc_appdata_dir);
+                // TODO: Copy the important folders over to here from base MC folder. Is there any I am missing?
+                Utilities.DirectoryCopy(mc_appdata_dir + @"\bin\", new_mc_appdata_dir + @"\bin", true);
+                Window.Dispatcher.Invoke(DispatcherPriority.Normal, new Action<double, string>(Window.UpdateProgressAndText), 30, "Setting up minecraft directory");
+                Utilities.DirectoryCopy(mc_appdata_dir + @"\resources\", new_mc_appdata_dir + @"\resources", true);
+            }
+
+
+            Window.Dispatcher.Invoke(DispatcherPriority.Normal, new Action<double, string>(Window.UpdateProgressAndText), 50, "Unpacking download");
 
             var options = new ReadOptions { StatusMessageWriter = System.Console.Out };
             using (ZipFile zip = ZipFile.Read(TemporaryZipDownload, options))
@@ -54,27 +75,23 @@ namespace IndustrialInstaller
             File.Delete(TemporaryZipDownload);
 
             // TODO: Decide how we want to cleanup old version of data laying around like the internal_mods directory.
-            // TODO: Load each of these as a separate thread, this will lock up the UI less and let the progress bar update properly.
+            // TODO: Fix so that all cfg,options,etc files are all part of zip instead of this.
 
-            Window.Dispatcher.Invoke(DispatcherPriority.Normal, new Action<double, string>(Window.UpdateProgressAndText), 30, "Moving modded bin files.");
-            // First move all bin files to the MC appdata directory.
-            Utilities.MoveFiles(temp_unpacked_dir + @"\bin\", mc_appdata_dir + @"\bin\");
+            // Copy all directories within the minecraft directory
+            Window.Dispatcher.Invoke(DispatcherPriority.Normal, new Action<double, string>(Window.UpdateProgressAndText), 75, "Moving modded minecraft files.");
+            Utilities.MoveFiles(temp_unpacked_dir + @"\minecraft\", new_mc_appdata_dir, true);
 
-            Window.Dispatcher.Invoke(DispatcherPriority.Normal, new Action<double, string>(Window.UpdateProgressAndText), 45, "Moving mod files.");
-            // Now move all mods files to the MC mods directory (and create mods dir if it doesn't exist).
-            Utilities.MoveFiles(temp_unpacked_dir + @"\mods\", mc_appdata_dir + @"\mods\");
-
-            Window.Dispatcher.Invoke(DispatcherPriority.Normal, new Action<double, string>(Window.UpdateProgressAndText), 60, "Moving internal mod files.");
+            Window.Dispatcher.Invoke(DispatcherPriority.Normal, new Action<double, string>(Window.UpdateProgressAndText), 80, "Moving internal mod files.");
             // Move all internal mods into the the internal mods directory
-            Utilities.MoveFiles(temp_unpacked_dir + @"\i_mods", InstallDirectory + @"\internal_mods\");
+            Utilities.MoveFiles(temp_unpacked_dir + @"\i_mods", InstallDirectory + @"\internal_mods\", false);
 
-            Window.Dispatcher.Invoke(DispatcherPriority.Normal, new Action<double, string>(Window.UpdateProgressAndText), 75, "Moving launcher files.");
+            Window.Dispatcher.Invoke(DispatcherPriority.Normal, new Action<double, string>(Window.UpdateProgressAndText), 90, "Moving launcher files.");
             // Move all base files to install directory
-            Utilities.MoveFiles(temp_unpacked_dir, InstallDirectory);
+            Utilities.MoveFiles(temp_unpacked_dir, InstallDirectory, false);
             
-            Window.Dispatcher.Invoke(DispatcherPriority.Normal, new Action<double, string>(Window.UpdateProgressAndText), 90, "Updating Config.");
+            Window.Dispatcher.Invoke(DispatcherPriority.Normal, new Action<double, string>(Window.UpdateProgressAndText), 95, "Updating Config.");
             // Now setup the MagicLauncher config
-            Utilities.ConfigStatus status = Utilities.CreateOrUpdateConfig(mc_appdata_dir, InstallDirectory);
+            Utilities.ConfigStatus status = Utilities.CreateOrUpdateConfig(mc_appdata_dir, new_mc_appdata_dir, InstallDirectory);
 
             Window.Dispatcher.Invoke(DispatcherPriority.Normal, new Action<double, string>(Window.UpdateProgressAndText), 99, "Cleaning up temp files.");
             // Finally, delete all temp files

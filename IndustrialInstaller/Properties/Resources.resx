@@ -120,7 +120,7 @@
   <data name="config_string" xml:space="preserve">
     <value>&lt;Profile
   &lt;Name="Default"&gt;
-  &lt;MinecraftJar="%mc_jar%"&gt;
+  &lt;MinecraftJar="%mc_jar%\\bin\\minecraft.jar"&gt;
   &lt;MaxMemory="1024"&gt;
   &lt;InactiveExternalMods
     "buildcraft-client-A-core-2.2.14.zip"
@@ -137,8 +137,9 @@
 &gt;
 &lt;Profile
   &lt;Name="IndustrialMinecraft"&gt;
-  &lt;MinecraftJar="%mc_indust_jar%"&gt;
+  &lt;MinecraftJar="%indust_mc%\\bin\\industrial_minecraft.jar"&gt;
   &lt;MaxMemory="1024"&gt;
+  &lt;BaseDir="%indust_mc%"&gt;
   &lt;Mod
     &lt;File="%i_mod%\\OptiFine_1.2.5_HD_A5.zip"&gt;
     &lt;Active="true"&gt;
@@ -165,14 +166,12 @@
   <data name="Ionic_Zip" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Ionic.Zip.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="NEI" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\NEI.cfg;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="profile_string" xml:space="preserve">
     <value>&lt;Profile
   &lt;Name="IndustrialMinecraft"&gt;
-  &lt;MinecraftJar="%mc_indust_jar%"&gt;
+  &lt;MinecraftJar="%indust_mc%\\bin\\industrial_minecraft.jar"&gt;
   &lt;MaxMemory="1024"&gt;
+  &lt;BaseDir="%indust_mc%"&gt;
   &lt;Mod
     &lt;File="%i_mod%\\OptiFine_1.2.5_HD_A5.zip"&gt;
     &lt;Active="true"&gt;
