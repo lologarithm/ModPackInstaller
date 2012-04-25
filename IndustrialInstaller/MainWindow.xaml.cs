@@ -70,7 +70,10 @@ namespace IndustrialInstaller
         private void ProgressChanged(object sender, DownloadProgressChangedEventArgs e)
         {
             // Update text with total bytes and % download
-            UpdateProgressAndText(e.ProgressPercentage, "Downloading: " + e.BytesReceived + " / " + e.TotalBytesToReceive + "(" + e.ProgressPercentage + "%)");
+            StringBuilder sb = new StringBuilder("Downloading: ").Append(String.Format("{0:0.00}", Math.Round(e.BytesReceived / (1024 * 1024.0), 2)));
+            sb.Append("mb / ").Append(Math.Round(e.TotalBytesToReceive / (1024*1024.0), 2)).Append("mb (");
+            sb.Append(e.ProgressPercentage).Append("%)");
+            UpdateProgressAndText(e.ProgressPercentage, sb.ToString());
         }
 
         private void Completed(object sender, AsyncCompletedEventArgs e)

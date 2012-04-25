@@ -53,7 +53,6 @@ namespace IndustrialInstaller
             if (!Directory.Exists(new_mc_appdata_dir))
             {
                 Directory.CreateDirectory(new_mc_appdata_dir);
-                // TODO: Copy the important folders over to here from base MC folder. Is there any I am missing?
                 Utilities.DirectoryCopy(mc_appdata_dir + @"\bin\", new_mc_appdata_dir + @"\bin", true);
                 Window.Dispatcher.Invoke(DispatcherPriority.Normal, new Action<double, string>(Window.UpdateProgressAndText), 30, "Setting up minecraft directory");
                 Utilities.DirectoryCopy(mc_appdata_dir + @"\resources\", new_mc_appdata_dir + @"\resources", true);
@@ -65,13 +64,9 @@ namespace IndustrialInstaller
             var options = new ReadOptions { StatusMessageWriter = System.Console.Out };
             using (ZipFile zip = ZipFile.Read(TemporaryZipDownload, options))
             {
-                // This call to ExtractAll() assumes:
-                //   - none of the entries are password-protected.
-                //   - want to extract all entries to current working directory
-                //   - none of the files in the zip already exist in the directory;
-                //     if they do, the method will throw.
                 zip.ExtractAll(temp_unpacked_dir);
             }
+
             File.Delete(TemporaryZipDownload);
 
             // TODO: Decide how we want to cleanup old version of data laying around like the internal_mods directory.
