@@ -11,5 +11,8 @@ namespace ModPackInstaller
         // 2. List profiles by name 
         // 3. Remove profile by name
         // 4. Add profiles
+
+        // 5. Profiles should be stored in .zip not in client
+        // 6. Create generalized system for allowing variables in the profile (aka %value%).
     }
 }

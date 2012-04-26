@@ -3,19 +3,21 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="MainWindow" Height="350" Width="525">
     <Grid>
-        <TextBlock Height="37" HorizontalAlignment="Left" Margin="12,10,0,0" Name="header" VerticalAlignment="Top" Width="479" Text="Industrial Mod Installer" FontSize="20" FontFamily="Impact" TextAlignment="Center" />
+        <TextBlock Height="37" HorizontalAlignment="Left" Margin="12,10,0,0" Name="header" VerticalAlignment="Top" Width="479" Text="Mod Installer" FontSize="20" FontFamily="Impact" TextAlignment="Center" />
 
         <TextBlock Height="25" Text="Step 1. Start downloading package." Margin="12,55,12,0" Name="DLText" VerticalAlignment="Top" />
         <Button Content="Download" Height="25" HorizontalAlignment="Left" Margin="25,90,0,0" Name="dl_button" VerticalAlignment="Top" Width="65" Click="btnDownload_Click" />
+        <TextBlock Height="25" HorizontalAlignment="Left" Margin="100,90,0,0" Name="DLStatusText" Text="Waiting for download." Visibility="Hidden" VerticalAlignment="Top" Width="480" FontFamily="Calibri" />
+        <ProgressBar Height="10" HorizontalAlignment="Left" Margin="100,105,0,0" Name="DLProgressBar" VerticalAlignment="Top" Width="300" Visibility="Hidden" />
 
         <TextBlock Height="25" Text="Step 2. Select installation directory" Margin="12,130,12,0" Name="dirText" VerticalAlignment="Top" />
         <TextBox Height="25" Width="300" Text="" Margin="25,165,0,0" Name="installLocation" VerticalAlignment="Top" HorizontalAlignment="Left" />
         <Button Content="Select directory" Height="25" Width="100" Margin="335,165,0,0" Name="selectInstallButton" VerticalAlignment="Top" HorizontalAlignment="Left" Click="btn_SelectDirectory_clicked" />
 
         <TextBlock Height="25" Width="Auto" Text="Step 3. Install when download is complete." Margin="12,200,0,0" Name="installText" VerticalAlignment="Top" />
-        <Button IsEnabled="False" Content="Install" Height="25" Width="100" Margin="25,235,0,0" Name="startInstallButton" VerticalAlignment="Top" HorizontalAlignment="Left" Click="btn_Install_clicked" />
+        <Button Content="Install" Height="25" Width="100" Margin="25,235,0,0" Name="startInstallButton" VerticalAlignment="Top" HorizontalAlignment="Left" Click="btn_Install_clicked" />
 
-        <TextBlock Height="25" HorizontalAlignment="Center" Margin="0,0,0,15" Name="status_text" Text="Status: Waiting for download." VerticalAlignment="Bottom" Width="480" FontFamily="Calibri" />
-        <ProgressBar Height="10" HorizontalAlignment="Left" Margin="12,0,0,12" Name="progressBar" VerticalAlignment="Bottom" Width="300" Visibility="Hidden" />
+        <TextBlock Height="25" HorizontalAlignment="Center" Margin="0,0,0,15" Name="InstallStatusText" Text="Status: " VerticalAlignment="Bottom" Width="480" FontFamily="Calibri" />
+        <ProgressBar Height="10" HorizontalAlignment="Left" Margin="12,0,0,5" Name="InstallProgressBar" VerticalAlignment="Bottom" Width="300" />
     </Grid>
 </Window>

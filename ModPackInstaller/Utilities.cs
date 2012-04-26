@@ -19,11 +19,6 @@ namespace ModPackInstaller
         {
             if (Directory.Exists(from))
             {
-                if (to.LastIndexOf(@"\") != to.Length - 1)
-                {
-                    to += @"\";
-                }
-
                 string[] all_files = Directory.GetFiles(from);
 
                 if (!Directory.Exists(to))
@@ -33,16 +28,15 @@ namespace ModPackInstaller
 
                 foreach (string file in all_files)
                 {
-                    int slash_index = file.LastIndexOf(@"\");
-                    string file_name = file.Substring(slash_index + 1, file.Length - slash_index - 1);
-
+                    string file_name = Path.GetFileName(file);
+                    string full_to = Path.Combine(to, file_name);
                     // Make sure to delete old version before moving.
-                    if (File.Exists(to + file_name))
+                    if (File.Exists(full_to))
                     {
-                        File.Delete(to + file_name);
+                        File.Delete(full_to);
                     }
-                    
-                    File.Move(file, to + file_name);
+
+                    File.Move(file, full_to);
                 }
 
                 if (recursive)
@@ -51,9 +45,9 @@ namespace ModPackInstaller
 
                     foreach (string sub_dir in sub_dirs)
                     {
-                        int dir_slash_index = sub_dir.LastIndexOf(@"\");
-                        string dir_name = sub_dir.Substring(dir_slash_index + 1, sub_dir.Length - dir_slash_index - 1);
-                        MoveFiles(sub_dir, to + dir_name, true);
+                        string dir_name = Path.GetFileNameWithoutExtension(sub_dir);
+                        string full_to_dir = Path.Combine(to, dir_name);
+                        MoveFiles(sub_dir, full_to_dir, true);
                     }
 
                 }
@@ -109,8 +103,7 @@ namespace ModPackInstaller
 
         /// <summary>
         /// Given a Minecraft directory and install directory this method will copy all modloader mods, internal mods, MagicLauncher profile, and NEI profile to the correct locations.
-        /// TODO: Separate out the different config copying. This will make code easier to read and easier to modify. Specifically we want to enable magiclauncher profile in a different
-        /// directory than the options.txt and NEI.cfg
+        /// TODO: Separate out the different config copying.
         /// </summary>
         /// <param name="mc_dir">Directory that MC is installed at (usually %appdata%/.minecraft)</param>
         /// <param name="install_dir">Directory that the Launcher and internal mods will be installed at.</param>

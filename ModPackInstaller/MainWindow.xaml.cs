@@ -16,32 +16,32 @@ using System.ComponentModel;
 using Ionic.Zip;
 using System.IO;
 using System.Threading;
+using System.Configuration;
 
 namespace ModPackInstaller
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
+    /// Note: BAD CODER - BAD! No logic in code behind!!!!!!
+    /// Ah well, this was faster... for now...
     /// </summary>
     public partial class MainWindow : Window
     {
         private string temp_zip_file = "";
+        private string temp_texture_file = "";
         private string install_dir = "";
 
-        // 1. Prompt user to select installation location.
-        // 2. Download .zip
-        // 3. unzip
-        // 4. Move bin/mod directory to .minecraft folder
-        // 5. Check to see if magiclaucher .cfg exists.
-        // 6. If exists, add new profile, if not, create new cfg
-        // 7. Place MagicLauncher with external mods in the installation location.
+        private bool main_zip_downloaded = false;
+        public volatile bool TexturePackDownloaded = false;
+        private bool install_button_pressed = false;
 
         public MainWindow()
         {
             InitializeComponent();
 
-
-            // Default install will be in mydocuments
-            installLocation.Text = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\IndustrialLauncher";
+            header.Text = ConfigurationManager.AppSettings["header"];
+            // Default install will be in my documents
+            installLocation.Text = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), ConfigurationManager.AppSettings["package_name"]);
             install_dir = installLocation.Text;
         }
 
@@ -52,34 +52,55 @@ namespace ModPackInstaller
                 // Prevent user from hittin button again.
                 dl_button.IsEnabled = false;
                 //
-                progressBar.Visibility = System.Windows.Visibility.Visible;
+                DLProgressBar.Visibility = System.Windows.Visibility.Visible;
+                DLStatusText.Visibility = System.Windows.Visibility.Visible;
 
                 // DL zip into temp file.
                 temp_zip_file = System.IO.Path.GetTempFileName();
 
                 // Async DL class that will update the progress bar as it downloads.
                 WebClient webClient = new WebClient();
-                webClient.DownloadFileCompleted += new AsyncCompletedEventHandler(Completed);
-                webClient.DownloadProgressChanged += new DownloadProgressChangedEventHandler(ProgressChanged);
-                
-                // TODO: make this configurable so we don't recompile everytime we change the location. This could also let other people use this.
-                webClient.DownloadFileAsync(new Uri("http://lologarithm.dyndns.org/minecraft/industrial_client.zip"), temp_zip_file);
+                webClient.DownloadFileCompleted += new AsyncCompletedEventHandler(MainDLCompleted);
+                webClient.DownloadProgressChanged += new DownloadProgressChangedEventHandler(DLProgressChanged);
+                webClient.DownloadFileAsync(new Uri(ConfigurationManager.AppSettings["mod_zip_url"]), temp_zip_file);
             }
         }
 
-        private void ProgressChanged(object sender, DownloadProgressChangedEventArgs e)
+        private void DLProgressChanged(object sender, DownloadProgressChangedEventArgs e)
         {
             // Update text with total bytes and % download
             StringBuilder sb = new StringBuilder("Downloading: ").Append(String.Format("{0:0.00}", Math.Round(e.BytesReceived / (1024 * 1024.0), 2)));
             sb.Append("mb / ").Append(Math.Round(e.TotalBytesToReceive / (1024*1024.0), 2)).Append("mb (");
             sb.Append(e.ProgressPercentage).Append("%)");
-            UpdateProgressAndText(e.ProgressPercentage, sb.ToString());
+            UpdateDLProgressAndText(e.ProgressPercentage, sb.ToString());
         }
 
-        private void Completed(object sender, AsyncCompletedEventArgs e)
+        private void MainDLCompleted(object sender, AsyncCompletedEventArgs e)
         {
-            startInstallButton.IsEnabled = true;
-            UpdateProgressAndText(0, "Download Complete, Ready to Install.");
+            main_zip_downloaded = true;
+            UpdateDLProgressAndText(0, "Download Complete, Ready to Install.");
+            UpdateInstallProgressAndText(0, "Main Download Complete, Ready to Install.");
+
+            // After main DL done, start up texture DL if it is needed.
+            if ( ConfigurationManager.AppSettings["texture_zip_url"] != "" )
+            {
+                Uri texture_uri = new Uri(ConfigurationManager.AppSettings["texture_zip_url"]);
+                temp_texture_file = System.IO.Path.Combine(System.IO.Path.GetTempPath(), texture_uri.Segments[texture_uri.Segments.Length - 1]);
+
+                WebClient webClient = new WebClient();
+                webClient.DownloadFileCompleted += new AsyncCompletedEventHandler(TextureDLCompleted);
+                webClient.DownloadProgressChanged += new DownloadProgressChangedEventHandler(DLProgressChanged);
+                webClient.DownloadFileAsync(texture_uri, temp_texture_file);
+            }
+
+            // If people already pressed install before DL ready just kick it off
+            if (install_button_pressed)
+                StartInstallation();
+        }
+
+        private void TextureDLCompleted(object sender, AsyncCompletedEventArgs e)
+        {
+            TexturePackDownloaded = true;
         }
 
         private void btn_SelectDirectory_clicked(object sender, RoutedEventArgs e)
@@ -98,19 +119,39 @@ namespace ModPackInstaller
 
         private void btn_Install_clicked(object sender, RoutedEventArgs e)
         {
+            DisableInstallButton();
             // When install button is clicked we kick off new thread so that UI thread doesn't freeze.
-            Installer i = new Installer(this, temp_zip_file, install_dir);
+            if (main_zip_downloaded)
+            {
+                StartInstallation();
+            }
+            else
+            {
+                // wait until download is ready to click install
+                install_button_pressed = true;
+            }
+        }
 
-            Thread install_thread = new Thread(i.DoInstallation);
+        private void StartInstallation()
+        {
+            Installer installer = new Installer(this, temp_zip_file, install_dir, temp_texture_file);
+
+            Thread install_thread = new Thread(installer.DoInstallation);
             install_thread.Start();
         }
 
-        public void UpdateProgressAndText(double progress, string status)
+        public void UpdateInstallProgressAndText(double progress, string status)
         {
-            progressBar.Value = progress;
-            status_text.Text = status;
+            InstallProgressBar.Value = progress;
+            InstallStatusText.Text = status;
         }
 
+        public void UpdateDLProgressAndText(double progress, string status)
+        {
+            DLProgressBar.Value = progress;
+            DLStatusText.Text = status;
+        }
+    
         public void DisableInstallButton()
         {
             startInstallButton.IsEnabled = false;
