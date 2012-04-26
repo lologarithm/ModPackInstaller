@@ -11,18 +11,22 @@ namespace ModPackInstaller
 {
     class Installer
     {
+        private string PackageName = "";
         private string TemporaryZipDownload = "";
         private string TemporaryTextureDownload = "";
         private string InstallDirectory = "";
+        private string MCInstallDirectory = "";
         private MainWindow Window;
 
 
-        public Installer(MainWindow window, string temp_zip_file, string install_dir, string texture_pack)
+        public Installer(MainWindow window, string package_name, string temp_zip_file, string install_dir, string mc_install_dir, string texture_pack)
         {
             this.Window = window;
             this.InstallDirectory = install_dir;
             this.TemporaryZipDownload = temp_zip_file;
             this.TemporaryTextureDownload = texture_pack;
+            this.MCInstallDirectory = mc_install_dir;
+            this.PackageName = package_name;
         }
 
         /// <summary>
@@ -34,14 +38,14 @@ namespace ModPackInstaller
         {
             string temp_unpacked_dir = System.IO.Path.GetTempPath() + System.IO.Path.GetRandomFileName();
 
-            string mc_appdata_dir = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\.minecraft";
             string new_mc_appdata_dir = InstallDirectory + @"\.minecraft";
 
             Window.Dispatcher.Invoke(DispatcherPriority.Normal, new Action<double, string>(Window.UpdateInstallProgressAndText), 5, "Setting up minecraft directory");
 
-            if (!Directory.Exists(mc_appdata_dir))
+            // If MC Directory or the \bin directories don't exist, throw error.
+            if (!Directory.Exists(MCInstallDirectory) && !Directory.Exists( Path.Combine(MCInstallDirectory, "bin")) )
             {
-                Window.Dispatcher.Invoke(DispatcherPriority.Normal, new Action<double, string>(Window.UpdateInstallProgressAndText), 1, "Warning! No minecraft folder at:" + mc_appdata_dir);
+                Window.Dispatcher.Invoke(DispatcherPriority.Normal, new Action<double, string>(Window.UpdateInstallProgressAndText), 1, "Warning! No minecraft folder at:" + MCInstallDirectory);
                 return;
             }
 
@@ -53,9 +57,9 @@ namespace ModPackInstaller
             if (!Directory.Exists(new_mc_appdata_dir))
             {
                 Directory.CreateDirectory(new_mc_appdata_dir);
-                Utilities.DirectoryCopy(mc_appdata_dir + @"\bin\", new_mc_appdata_dir + @"\bin", true);
+                Utilities.DirectoryCopy(MCInstallDirectory + @"\bin\", new_mc_appdata_dir + @"\bin", true);
                 Window.Dispatcher.Invoke(DispatcherPriority.Normal, new Action<double, string>(Window.UpdateInstallProgressAndText), 30, "Setting up minecraft directory");
-                Utilities.DirectoryCopy(mc_appdata_dir + @"\resources\", new_mc_appdata_dir + @"\resources", true);
+                Utilities.DirectoryCopy(MCInstallDirectory + @"\resources\", new_mc_appdata_dir + @"\resources", true);
             }
 
 
@@ -85,7 +89,7 @@ namespace ModPackInstaller
 
             Window.Dispatcher.Invoke(DispatcherPriority.Normal, new Action<double, string>(Window.UpdateInstallProgressAndText), 93, "Updating Config.");
             // Now setup the MagicLauncher config
-            Utilities.ConfigStatus status = Utilities.CreateOrUpdateConfig(mc_appdata_dir, new_mc_appdata_dir, InstallDirectory);
+            MagicProfileEditor.ConfigStatus status = MagicProfileEditor.CreateOrUpdateConfig(PackageName, MCInstallDirectory, new_mc_appdata_dir, InstallDirectory);
 
             Window.Dispatcher.Invoke(DispatcherPriority.Normal, new Action<double, string>(Window.UpdateInstallProgressAndText), 95, "Cleaning up temp files.");
             // Finally, delete all temp files
@@ -104,9 +108,9 @@ namespace ModPackInstaller
 
             // If user already has MagicLauncher we let them know the name of the new profile to use.
             string new_text = "Installation Complete: ";
-            if (status == Utilities.ConfigStatus.CreatedNew)
+            if (status == MagicProfileEditor.ConfigStatus.CreatedNew)
                 new_text += "Go to your install directory and run the exe!";
-            else if (status == Utilities.ConfigStatus.UpdatedExisting)
+            else if (status == MagicProfileEditor.ConfigStatus.UpdatedExisting)
                 new_text += "When running magic launcher use the new profile.";
 
             Window.Dispatcher.Invoke(DispatcherPriority.Normal, new Action<double, string>(Window.UpdateInstallProgressAndText), 100, new_text);

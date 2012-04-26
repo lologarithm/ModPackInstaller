@@ -63,7 +63,7 @@ namespace ModPackInstaller.Properties {
         /// <summary>
         ///   Looks up a localized string similar to &lt;Profile
         ///  &lt;Name=&quot;Default&quot;&gt;
-        ///  &lt;MinecraftJar=&quot;%mc_jar%\\bin\\minecraft.jar&quot;&gt;
+        ///  &lt;MinecraftJar=&quot;%minecraft_location%\\bin\\minecraft.jar&quot;&gt;
         ///  &lt;MaxMemory=&quot;1024&quot;&gt;
         ///  &lt;InactiveExternalMods
         ///    &quot;buildcraft-client-A-core-2.2.14.zip&quot;
@@ -75,7 +75,7 @@ namespace ModPackInstaller.Properties {
         ///    &quot;NEI_RedPowerPlugin 1.2.2.zip&quot;
         ///    &quot;RedPowerCore-2.0pr5.zip&quot;
         ///    &quot;RedPowerLogic-2.0pr5.zip&quot;
-        ///    &quot;RedPowerWiring-2.0pr5.zip&quot; [rest of string was truncated]&quot;;.
+        ///    &quot;RedPowerWiring [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string config_string {
             get {
@@ -92,28 +92,25 @@ namespace ModPackInstaller.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to &lt;Profile
-        ///  &lt;Name=&quot;IndustrialMinecraft&quot;&gt;
-        ///  &lt;MinecraftJar=&quot;%indust_mc%\\bin\\industrial_minecraft.jar&quot;&gt;
+        ///  &lt;Name=&quot;%package_name%&quot;&gt;
+        ///  &lt;MinecraftJar=&quot;%install_location%\\bin\\industrial_minecraft.jar&quot;&gt;
         ///  &lt;MaxMemory=&quot;1024&quot;&gt;
-        ///  &lt;BaseDir=&quot;%indust_mc%&quot;&gt;
+        ///  &lt;BaseDir=&quot;%install_location%&quot;&gt;
         ///  &lt;Mod
-        ///    &lt;File=&quot;%i_mod%\\OptiFine_1.2.5_HD_A5.zip&quot;&gt;
+        ///    &lt;File=&quot;%int_mod_location%\\OptiFine_1.2.5_HD_A5.zip&quot;&gt;
         ///    &lt;Active=&quot;true&quot;&gt;
         ///  &gt;
         ///  &lt;Mod
-        ///    &lt;File=&quot;%i_mod%\\CodeChickenCore-Client 0.5.2.zip&quot;&gt;
+        ///    &lt;File=&quot;%int_mod_location%\\CodeChickenCore-Client 0.5.2.zip&quot;&gt;
         ///    &lt;Active=&quot;true&quot;&gt;
         ///  &gt;
         ///  &lt;Mod
-        ///    &lt;File=&quot;%i_mod%\\NotEnoughItems-Client 1.2.2.zip&quot;&gt;
+        ///    &lt;File=&quot;%int_mod_location%\\NotEnoughItems-Client 1.2.2.zip&quot;&gt;
         ///    &lt;Active=&quot;true&quot;&gt;
         ///  &gt;
         ///  &lt;Mod
-        ///    &lt;File=&quot;%i_mod%\\[1.2.5]ReiMinimap_v3.0_06.zip&quot;&gt;
-        ///    &lt;Active=&quot;true&quot;&gt;
-        ///  &gt;
-        ///  &lt;InactiveExternalMods=&gt;
-        ///&gt;.
+        ///    &lt;File=&quot;%int_mod_location%\\[1.2.5]ReiMinimap_v3.0_06.zip&quot;&gt;
+        ///   [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string profile_string {
             get {

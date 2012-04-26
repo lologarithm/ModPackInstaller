@@ -30,6 +30,7 @@ namespace ModPackInstaller
         private string temp_zip_file = "";
         private string temp_texture_file = "";
         private string install_dir = "";
+        private string mc_install_dir = "";
 
         private bool main_zip_downloaded = false;
         public volatile bool TexturePackDownloaded = false;
@@ -41,8 +42,12 @@ namespace ModPackInstaller
 
             header.Text = ConfigurationManager.AppSettings["header"];
             // Default install will be in my documents
-            installLocation.Text = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), ConfigurationManager.AppSettings["package_name"]);
-            install_dir = installLocation.Text;
+            install_dir = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), ConfigurationManager.AppSettings["package_name"]);
+            // default MC directory
+            mc_install_dir = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), ".minecraft");
+
+            installLocation.Text = install_dir;
+            mc_install_dir_box.Text = mc_install_dir;
         }
 
         private void btnDownload_Click(object sender, RoutedEventArgs e)
@@ -134,7 +139,7 @@ namespace ModPackInstaller
 
         private void StartInstallation()
         {
-            Installer installer = new Installer(this, temp_zip_file, install_dir, temp_texture_file);
+            Installer installer = new Installer(this, ConfigurationManager.AppSettings["package_name"], temp_zip_file, install_dir, mc_install_dir, temp_texture_file);
 
             Thread install_thread = new Thread(installer.DoInstallation);
             install_thread.Start();
@@ -155,6 +160,20 @@ namespace ModPackInstaller
         public void DisableInstallButton()
         {
             startInstallButton.IsEnabled = false;
+        }
+
+        private void btn_SelectMCDir_clicked(object sender, RoutedEventArgs e)
+        {
+            var dialog = new System.Windows.Forms.FolderBrowserDialog();
+            dialog.SelectedPath = install_dir;
+            System.Windows.Forms.DialogResult result = dialog.ShowDialog();
+
+            if (result == System.Windows.Forms.DialogResult.OK)
+            {
+                mc_install_dir = dialog.SelectedPath;
+            }
+
+            mc_install_dir_box.Text = mc_install_dir;
         }
     }
 }

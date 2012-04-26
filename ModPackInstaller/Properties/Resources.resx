@@ -120,7 +120,7 @@
   <data name="config_string" xml:space="preserve">
     <value>&lt;Profile
   &lt;Name="Default"&gt;
-  &lt;MinecraftJar="%mc_jar%\\bin\\minecraft.jar"&gt;
+  &lt;MinecraftJar="%minecraft_location%\\bin\\minecraft.jar"&gt;
   &lt;MaxMemory="1024"&gt;
   &lt;InactiveExternalMods
     "buildcraft-client-A-core-2.2.14.zip"
@@ -136,24 +136,24 @@
   &gt;
 &gt;
 &lt;Profile
-  &lt;Name="IndustrialMinecraft"&gt;
-  &lt;MinecraftJar="%indust_mc%\\bin\\industrial_minecraft.jar"&gt;
+  &lt;Name="%package_name%"&gt;
+  &lt;MinecraftJar="%install_location%\\bin\\industrial_minecraft.jar"&gt;
   &lt;MaxMemory="1024"&gt;
-  &lt;BaseDir="%indust_mc%"&gt;
+  &lt;BaseDir="%install_location%"&gt;
   &lt;Mod
-    &lt;File="%i_mod%\\OptiFine_1.2.5_HD_A5.zip"&gt;
+    &lt;File="%int_mod_location%\\OptiFine_1.2.5_HD_A5.zip"&gt;
     &lt;Active="true"&gt;
   &gt;
   &lt;Mod
-    &lt;File="%i_mod%\\CodeChickenCore-Client 0.5.2.zip"&gt;
+    &lt;File="%int_mod_location%\\CodeChickenCore-Client 0.5.2.zip"&gt;
     &lt;Active="true"&gt;
   &gt;
   &lt;Mod
-    &lt;File="%i_mod%\\NotEnoughItems-Client 1.2.2.zip"&gt;
+    &lt;File="%int_mod_location%\\NotEnoughItems-Client 1.2.2.zip"&gt;
     &lt;Active="true"&gt;
   &gt;
   &lt;Mod
-    &lt;File="%i_mod%\\[1.2.5]ReiMinimap_v3.0_06.zip"&gt;
+    &lt;File="%int_mod_location%\\[1.2.5]ReiMinimap_v3.0_06.zip"&gt;
     &lt;Active="true"&gt;
   &gt;
   &lt;InactiveExternalMods=&gt;
@@ -168,24 +168,24 @@
   </data>
   <data name="profile_string" xml:space="preserve">
     <value>&lt;Profile
-  &lt;Name="IndustrialMinecraft"&gt;
-  &lt;MinecraftJar="%indust_mc%\\bin\\industrial_minecraft.jar"&gt;
+  &lt;Name="%package_name%"&gt;
+  &lt;MinecraftJar="%install_location%\\bin\\industrial_minecraft.jar"&gt;
   &lt;MaxMemory="1024"&gt;
-  &lt;BaseDir="%indust_mc%"&gt;
+  &lt;BaseDir="%install_location%"&gt;
   &lt;Mod
-    &lt;File="%i_mod%\\OptiFine_1.2.5_HD_A5.zip"&gt;
+    &lt;File="%int_mod_location%\\OptiFine_1.2.5_HD_A5.zip"&gt;
     &lt;Active="true"&gt;
   &gt;
   &lt;Mod
-    &lt;File="%i_mod%\\CodeChickenCore-Client 0.5.2.zip"&gt;
+    &lt;File="%int_mod_location%\\CodeChickenCore-Client 0.5.2.zip"&gt;
     &lt;Active="true"&gt;
   &gt;
   &lt;Mod
-    &lt;File="%i_mod%\\NotEnoughItems-Client 1.2.2.zip"&gt;
+    &lt;File="%int_mod_location%\\NotEnoughItems-Client 1.2.2.zip"&gt;
     &lt;Active="true"&gt;
   &gt;
   &lt;Mod
-    &lt;File="%i_mod%\\[1.2.5]ReiMinimap_v3.0_06.zip"&gt;
+    &lt;File="%int_mod_location%\\[1.2.5]ReiMinimap_v3.0_06.zip"&gt;
     &lt;Active="true"&gt;
   &gt;
   &lt;InactiveExternalMods=&gt;

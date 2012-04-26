@@ -100,59 +100,5 @@ namespace ModPackInstaller
                 }
             }
         }
-
-        /// <summary>
-        /// Given a Minecraft directory and install directory this method will copy all modloader mods, internal mods, MagicLauncher profile, and NEI profile to the correct locations.
-        /// TODO: Separate out the different config copying.
-        /// </summary>
-        /// <param name="mc_dir">Directory that MC is installed at (usually %appdata%/.minecraft)</param>
-        /// <param name="install_dir">Directory that the Launcher and internal mods will be installed at.</param>
-        /// <returns></returns>
-        public static ConfigStatus CreateOrUpdateConfig(string mc_dir, string new_mc_dir, string install_dir)
-        {
-            ConfigStatus return_value = ConfigStatus.CreatedNew;
-
-            if (!Directory.Exists(mc_dir + @"\magic\"))
-            {
-                Directory.CreateDirectory(mc_dir + @"\magic\");
-            }
-
-            string config_string = "";
-
-            // TODO: Possibly add the resources for MagicLauncher profile to be part of zip instead of compiled.
-            // This will allow for more flexibilty in the package without having to recompile code.
-            if (!File.Exists(mc_dir + @"\magic\" + "MagicLauncher.cfg"))
-            {
-                config_string = ModPackInstaller.Properties.Resources.config_string;
-            }
-            else
-            {
-                // TODO: If player already has a profile called "IndustrialMinecraft" remove it so that a new one can be created.
-
-                config_string = ModPackInstaller.Properties.Resources.profile_string;
-                return_value = ConfigStatus.UpdatedExisting;
-            }
-
-            config_string = config_string.Replace("%mc_jar%", mc_dir);
-            config_string = config_string.Replace("%indust_mc%", new_mc_dir);
-            config_string = config_string.Replace("%i_mod%", install_dir + @"\internal_mods");
-
-            // So that magic launcher can properly read the escaped backslashes
-            config_string = config_string.Replace(@"\", @"\\");
-
-            File.AppendAllText(mc_dir + @"\magic\" + "MagicLauncher.cfg", config_string);
-
-            return return_value;
-        }
-
-        /// <summary>
-        /// States after running installation of MagicLauncher configs
-        /// This lets you tailor message to end user.
-        /// </summary>
-        public enum ConfigStatus
-        {
-            CreatedNew,
-            UpdatedExisting
-        }
     }
 }
