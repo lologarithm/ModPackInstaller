@@ -7,7 +7,7 @@ using Ionic.Zip;
 using System.Windows.Threading;
 using System.Threading;
 
-namespace IndustrialInstaller
+namespace ModPackInstaller
 {
     class Installer
     {

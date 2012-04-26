@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual C# Express 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IndustrialInstaller", "IndustrialInstaller\IndustrialInstaller.csproj", "{6875699F-0315-46CC-94F9-93F29CCD81CE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModPackInstaller", "ModPackInstaller\ModPackInstaller.csproj", "{6875699F-0315-46CC-94F9-93F29CCD81CE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -17,7 +17,7 @@ using Ionic.Zip;
 using System.IO;
 using System.Threading;
 
-namespace IndustrialInstaller
+namespace ModPackInstaller
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.IO;
 
-namespace IndustrialInstaller
+namespace ModPackInstaller
 {
     class Utilities
     {
@@ -130,13 +130,13 @@ namespace IndustrialInstaller
             // This will allow for more flexibilty in the package without having to recompile code.
             if (!File.Exists(mc_dir + @"\magic\" + "MagicLauncher.cfg"))
             {
-                config_string = IndustrialInstaller.Properties.Resources.config_string;
+                config_string = ModPackInstaller.Properties.Resources.config_string;
             }
             else
             {
                 // TODO: If player already has a profile called "IndustrialMinecraft" remove it so that a new one can be created.
 
-                config_string = IndustrialInstaller.Properties.Resources.profile_string;
+                config_string = ModPackInstaller.Properties.Resources.profile_string;
                 return_value = ConfigStatus.UpdatedExisting;
             }
 
