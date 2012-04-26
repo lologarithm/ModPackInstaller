@@ -71,6 +71,7 @@
     </ApplicationDefinition>
     <Compile Include="Installer.cs" />
     <Compile Include="MagicProfileEditor.cs" />
+    <Compile Include="MagicProfileParser.cs" />
     <Compile Include="Utilities.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -110,7 +111,6 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
-    <None Include="ReferenceConfig.cfg" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Ionic.Zip.dll" />

@@ -89,7 +89,18 @@ namespace ModPackInstaller
 
             Window.Dispatcher.Invoke(DispatcherPriority.Normal, new Action<double, string>(Window.UpdateInstallProgressAndText), 93, "Updating Config.");
             // Now setup the MagicLauncher config
-            MagicProfileEditor.ConfigStatus status = MagicProfileEditor.CreateOrUpdateConfig(PackageName, MCInstallDirectory, new_mc_appdata_dir, InstallDirectory);
+            MagicProfileEditor.ConfigStatus status = MagicProfileEditor.ConfigStatus.CreatedNew;
+
+            if (File.Exists(Path.Combine(InstallDirectory, "MagicProfile.cfg")))
+            {
+                // Read in packaged profile data
+                string packaged_profile = File.ReadAllText(Path.Combine(InstallDirectory, "MagicProfile.cfg"));
+                status = MagicProfileEditor.CreateOrUpdateConfig(PackageName, MCInstallDirectory, new_mc_appdata_dir, InstallDirectory, packaged_profile);
+                // Cleanup after done.
+                File.Delete(Path.Combine(InstallDirectory, "MagicProfile.cfg"));
+            }
+            else
+                status = MagicProfileEditor.CreateOrUpdateConfig(PackageName, MCInstallDirectory, new_mc_appdata_dir, InstallDirectory, "");
 
             Window.Dispatcher.Invoke(DispatcherPriority.Normal, new Action<double, string>(Window.UpdateInstallProgressAndText), 95, "Cleaning up temp files.");
             // Finally, delete all temp files

@@ -134,6 +134,7 @@ namespace ModPackInstaller
             {
                 // wait until download is ready to click install
                 install_button_pressed = true;
+                UpdateInstallProgressAndText(0, "Waiting for download to complete before beginning installation.");
             }
         }
 
