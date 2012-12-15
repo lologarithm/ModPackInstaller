@@ -122,7 +122,7 @@ namespace ModPackInstaller
             if (status == MagicProfileEditor.ConfigStatus.CreatedNew)
                 new_text += "Go to your install directory and run the exe!";
             else if (status == MagicProfileEditor.ConfigStatus.UpdatedExisting)
-                new_text += "When running magic launcher use the new profile.";
+                new_text += "When running magic launcher use the new profile:" + PackageName;
 
             Window.Dispatcher.Invoke(DispatcherPriority.Normal, new Action<double, string>(Window.UpdateInstallProgressAndText), 100, new_text);
 

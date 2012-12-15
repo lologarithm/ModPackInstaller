@@ -10,6 +10,7 @@ namespace ModPackInstaller
 {
     class MagicProfileEditor
     {
+        // TODO: Remove REGEX and replace with a real XML handler
         private static string MLProfileBaseText = "<Profile\n  <Name=\"%package_name%\">\n  <MinecraftJar=\"%install_location%\\\\bin\\\\minecraft.jar\">\n  <MaxMemory=\"1024\">\n  <BaseDir=\"%install_location%\">\n";
         private static string MLProfileModBaseText = "  <Mod\n    <File=\"%mod_file%\">\n    <Active=\"true\">\n  >\n";
         private static string MLProfileBaseEnding = "  <InactiveExternalMods=>\n>\n";
